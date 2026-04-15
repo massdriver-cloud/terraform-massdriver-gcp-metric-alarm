@@ -36,9 +36,5 @@ resource "google_monitoring_alert_policy" "alarm" {
 
 resource "massdriver_package_alarm" "package_alarm" {
   display_name      = var.display_name
-  cloud_resource_id = var.cloud_resource_id
-  metric {
-    namespace = var.resource_type
-    name      = var.metric_type
-  }
+  cloud_resource_id = google_monitoring_alert_policy.alarm.id
 }

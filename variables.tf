@@ -20,11 +20,6 @@ variable "notification_channel_id" {
   description = "Massdriver Alarm Channel - Notification Channel ID."
 }
 
-variable "cloud_resource_id" {
-  type        = string
-  description = "The identifier for the resource producing metrics. Usually the self_link attribute of the resource."
-}
-
 # Alarm Configuration
 
 variable "alarm_name" {
