@@ -4,6 +4,8 @@ Creates a Massdriver-integrated GCP Cloud Monitoring alert policy. Supports both
 
 Designed to be used with a Massdriver alarm channel module that provides the `notification_channel_id`.
 
+Registers the alarm with Massdriver for UI visibility via `massdriver_instance_alarm`.
+
 ## Usage
 
 ### Boolean metric alarm (no aggregations)
@@ -16,7 +18,6 @@ module "alarm" {
   display_name            = "Instance Running"
   message                 = "Instance is not running"
   notification_channel_id = var.notification_channel_id
-  cloud_resource_id       = google_compute_instance.main.self_link
   metric_type             = "compute.googleapis.com/instance/uptime"
   resource_type           = "gce_instance"
   comparison              = "COMPARISON_LT"
@@ -35,9 +36,9 @@ module "alarm" {
   display_name            = "High CPU"
   message                 = "CPU utilization is above 80%"
   notification_channel_id = var.notification_channel_id
-  cloud_resource_id       = google_compute_instance.main.self_link
   metric_type             = "compute.googleapis.com/instance/cpu/utilization"
   resource_type           = "gce_instance"
+  comparison              = "COMPARISON_GT"
   threshold               = 0.8
   duration                = 60
 
@@ -52,4 +53,4 @@ module "alarm" {
 ## Providers
 
 - `hashicorp/google`
-- `massdriver-cloud/massdriver`
+- `massdriver-cloud/massdriver` (>= 2.0)
