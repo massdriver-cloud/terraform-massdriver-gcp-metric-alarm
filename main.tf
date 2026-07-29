@@ -34,11 +34,17 @@ resource "google_monitoring_alert_policy" "alarm" {
   user_labels           = var.md_metadata.default_tags
 }
 
-resource "massdriver_package_alarm" "package_alarm" {
+resource "massdriver_instance_alarm" "instance_alarm" {
   display_name      = var.display_name
   cloud_resource_id = google_monitoring_alert_policy.alarm.id
+
+  comparison_operator = var.comparison
+  threshold           = var.threshold
+  period              = try(var.aggregations.alignment_period, null)
+
   metric {
     namespace = var.resource_type
     name      = var.metric_type
+    statistic = try(var.aggregations.per_series_aligner, null)
   }
 }
