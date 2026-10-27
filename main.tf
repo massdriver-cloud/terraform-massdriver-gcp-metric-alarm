@@ -1,6 +1,7 @@
 locals {
   alarm_name = coalesce(var.alarm_name, "${var.md_metadata.name_prefix}-${lower(replace(var.display_name, " ", ""))}")
-  filter     = "metric.type=\"${var.metric_type}\" AND resource.type=\"${var.resource_type}\" AND metadata.user_labels.md-instance=\"${var.md_metadata.default_tags["md-instance"]}\""
+  # Legacy default tags have no md-instance, only md-package (the name_prefix).
+  filter = "metric.type=\"${var.metric_type}\" AND resource.type=\"${var.resource_type}\" AND metadata.user_labels.${try("md-instance=\"${var.md_metadata.default_tags["md-instance"]}\"", "md-package=\"${var.md_metadata.default_tags["md-package"]}\"")}"
 }
 
 resource "google_monitoring_alert_policy" "alarm" {
